@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:background="@android:color/transparent">
+
+    <!--&lt;!&ndash;&lt;!&ndash;<TextView
+        android:id="@+id/tViewTile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:text="Video frames are being processed..."/>&ndash;&gt;
+
+    <View
+        android:id="@+id/horizontalCenterPartition_1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tViewTile"/>-->
+
+    <ProgressBar
+        android:id="@+id/pBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"/>
+    android:layout_centerInParent="true"
+    android:max="100"
+    android:indeterminate="false"
+    android:progress="0" />
+
+
+    <TextView
+        android:id="@+id/tView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:layout_marginStart="50dp"
+        android:textAlignment="center"
+        android:text="Processing video. Please wait.."
+        android:layout_below="@+id/pBar"/>
+</RelativeLayout>

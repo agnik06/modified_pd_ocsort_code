@@ -1,0 +1,54 @@
+:wq# Project Specific
+.vscode
+engine/bin
+engine/build
+engine/libs
+#models
+MON.sym
+android/applications/BoxOn/.idea/*
+tags
+
+resources
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+#*.so
+*.dylib
+*.dll
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+# Except folders
+!engine/third_party/*/libs/*/*
+!android/object_detector/third_party/*/libs/*/*
+android/applications/terminal_tester/src/libs/
+android/applications/terminal_tester/src/obj/local/*
+android/light_object_detector/libs/
+android/light_object_detector/src/obj/
+android/light_object_detector/src/libs/
+android/deploy-tools/App/
+android/applications/BoxOn/vz_object_detector/src/main/jniLibs/*
+#android folders
+.idea/
+android/applications/BoxOn/app/src/main/Log_Filter/
+android/deploy-tools/releases/
+android/deploy-tools/apps/
+.vscode/*

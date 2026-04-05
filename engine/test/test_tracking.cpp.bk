@@ -1,0 +1,94 @@
+#include "object_tracker.h"
+#include "opencv2/opencv.hpp"
+#include <iostream>
+
+//#include "modules/detector/mapper/data/roi_data_handler.hpp"
+
+#include <thread>
+#include <chrono>
+
+int test_object_tracker(std::string image_path){
+    //std::shared_ptr<vizlod::LightObjectDetector> object_detector(vizlod::LightObjectDetector::Create(), vizlod::LightObjectDetector::Destroy);
+    // vizlod::LightObjectDetector* object_detector = vizlod::LightObjectDetector::Create();
+
+    std::shared_ptr<vizlod::ObjectTracker> object_tracker(vizlod::ObjectTracker::Create(), vizlod::ObjectTracker::Destroy);
+
+    //Initialize
+    bool init_status = object_tracker->initialize(vizlod::ObjectTracker::Mode::DEFAULT);
+    std::cout<<"Init status: "<<init_status<<"\n";
+    if(!init_status){
+        std::cerr<<"Initialization of ObjectTracker failed\n";
+        return false;
+    }
+
+    //std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+    //Execute
+    //vizlod::ObjectTracker::BoxInfo boxinfo;
+    vizlod::ObjectTracker::trkRes boxinfo;
+    cv::Mat image = cv::imread(image_path);
+    char* image_buffer = reinterpret_cast<char*> (image.data);
+    bool inittracking_status = object_tracker->inittracking(image_buffer, image.cols, image.rows, 0, vizlod::ObjectTracker::ImageFormat::BGR, -1, -1, boxinfo);
+    // bool execute_status = object_detector->execute_on_touch(image_buffer, image.cols, image.rows, 0, vizlod::LightObjectDetector::ImageFormat::BGR, 100, 300);
+    std::cout<<"inittracking_status status: "<<inittracking_status<<"\n";
+    if(!inittracking_status){
+        std::cerr<<"Execution of tracking failed\n";
+        return false;
+    }
+
+    for(int i=0;i<boxinfo.numOfBoxes;i++){
+        std::cerr<<"Tracking info: trackingid=["<<boxinfo.Box[i].ID<<"],rect.left=[" << boxinfo.Box[i].rect.left << "], rect.top=[" << boxinfo.Box[i].rect.top << "], rect.right=[" << boxinfo.Box[i].rect.right << "], rect.bottom=[" << boxinfo.Box[i].rect.bottom << "]\n";
+    }
+
+    //process
+    int processstatus = true;
+    while(!processstatus){
+        //if no more frames to process then set processstatus to false
+        //read the next frame
+        cv::Mat image = cv::imread(image_path);
+        char* image_buffer = reinterpret_cast<char*> (image.data);
+        processstatus = object_tracker->keeptracking(image_buffer, 0, boxinfo);
+
+    }
+    /*
+
+    //Extract boxes
+    int n_boxes = object_tracker->get_n_boxes();
+    vizlod::LightObjectDetector::BoxInfo box_infos[n_boxes]; 
+
+    bool extraction_staus = object_detector->get_box_info(box_infos, n_boxes);
+    std::cout<<"Extraction status: "<<extraction_staus<<"\n";
+    if(!extraction_staus){
+        std::cerr<<"Extraction of result failed\n";
+    }
+    else{
+        for(int i=0; i<n_boxes; i++){
+            std::cout<<"Result: "<<box_infos[i].tag<<" | ("<<box_infos[i].image_width<<","<<box_infos[i].image_height<<")\n";
+            std::cout<<"Result: "<<"("<<box_infos[i].left<<","<<box_infos[i].top<<","<<box_infos[i].right<<","<<box_infos[i].bottom<<")\n";            
+        }
+    }
+
+    //Display result
+    if(extraction_staus){
+        for(int i=0; i<n_boxes; i++){
+            cv::Scalar color = cv::Scalar(0,255,0);
+            cv::rectangle(image, {box_infos[i].left, box_infos[i].top}, {box_infos[i].right, box_infos[i].bottom}, color);
+        }
+        cv::imwrite("test/output.png", image);
+        //cv::imshow("Output", image);
+        //cv::waitKey(0);
+    }
+    */
+    // vizlod::LightObjectDetector::Destroy(object_detector);
+
+    return 0;
+}
+
+int main(int argc, char** argv){
+    std::string image_path("test/test_image.jpg");
+    if(argc > 1) image_path = std::string(argv[1]);
+
+    test_object_tracker(image_path);
+    // test_data_handler();
+    return 0;
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BatchTestActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/directory_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select image directory"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark"
+            android:textStyle="bold" />
+
+        <vizinsight.atl.videoautofocus.ui.ToggleImageButton
+            android:id="@+id/select_folder_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+
+            android:src="@drawable/add_folder"
+            android:background="@color/ic_launcher_background"
+            android:scaleX="0.5"
+            android:scaleY="0.5" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
+        <vizinsight.atl.videoautofocus.ui.ToggleImageButton
+            android:id="@+id/play_stop_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:visibility="invisible"
+
+            android:src="@drawable/play"
+            android:background="@color/ic_launcher_background"
+            android:adjustViewBounds="true"
+            android:scaleX="0.4"
+            android:scaleY="0.4" />
+
+        <ImageView
+            android:id="@+id/progress_image"
+            android:layout_width="300dp"
+            android:layout_height="300dp" />
+
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

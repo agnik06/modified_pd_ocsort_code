@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <vizinsight.atl.videoautofocus.ui.ToggleImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/camera_select_button"
+            android:background="@color/ic_launcher_background"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="145dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/camera"
+            tools:ignore="MissingClass">
+
+        </vizinsight.atl.videoautofocus.ui.ToggleImageButton>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/camera_select_button"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="Camera Video" />
+
+        <vizinsight.atl.videoautofocus.ui.ToggleImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/ic_launcher_background"
+            android:id="@+id/folder_select_button"
+            android:layout_below="@+id/textView"
+            android:gravity="center"
+            android:scaleX="0.5"
+            android:scaleY="0.6"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="145dp"
+            android:src="@drawable/video"
+            android:scaleType="fitXY"
+            tools:ignore="MissingClass">
+
+        </vizinsight.atl.videoautofocus.ui.ToggleImageButton>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/folder_select_button"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="Video Test" />
+
+        <vizinsight.atl.videoautofocus.ui.ToggleImageButton
+            android:id="@+id/scene_select_button"
+            android:background="@color/ic_launcher_background"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/textView5"
+            android:gravity="center"
+            android:src="@drawable/video_batch_test"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="145dp"
+            android:scaleType="fitXY"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video Batch Test"
+            android:layout_below="@+id/scene_select_button"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="0dp"/>
+
+        <vizinsight.atl.videoautofocus.ui.ToggleImageButton
+            android:id="@+id/image_batch_select_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/textView6"
+            android:background="@color/ic_launcher_background"
+            android:gravity="center"
+            android:src="@drawable/image_batch_test"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="145dp"
+            android:scaleType="fitXY"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Image Batch Test"
+            android:layout_below="@+id/image_batch_select_button"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="5dp"/>
+
+    </RelativeLayout>
+
+
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <vizinsight.atl.boxon.ui.ToggleImageButton
+            android:id="@+id/folder_select_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:Gravity="center"
+            android:background="@color/ic_launcher_background"
+            android:scaleX="0.5"
+            android:scaleY="0.6"
+            android:src="@drawable/folder_select"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video Test"
+            android:textSize="15dp"
+            tools:ignore="MissingConstraints" />
+
+        <vizinsight.atl.boxon.ui.ToggleImageButton
+            android:id="@+id/scene_select_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="@color/ic_launcher_background"
+
+            android:scaleX="0.44"
+            android:scaleY="0.44"
+            android:src="@drawable/image_select"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Batch Test"
+            android:textSize="15dp"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

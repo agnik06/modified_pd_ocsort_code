@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="@dimen/camera_view_width"
+        android:layout_height="@dimen/camera_view_height">
+
+        <ImageView
+            android:id="@+id/segment_input_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/segment_result_mask"
+            android:alpha="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_icon"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<TextView
+        android:id="@+id/headerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:gravity="center|top"
+        android:textAllCaps="true"
+        android:background="@drawable/border_halo_orange_dark"
+        android:text="Tracking GOD Demo"/>-->
+
+    <TextView
+        android:id="@+id/fullVideoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/horizontalCenterPartition"
+        android:textColor="@android:color/black"
+        android:gravity="center|bottom"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:text="Original Video\n"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/video_1_surfaceview_lyt"
+        android:layout_above="@+id/horizontalCenterPartition"
+        android:orientation="vertical"
+        android:gravity="center">
+        <VideoView
+            android:id="@+id/original_video_videoview"
+            android:layout_margin="36dp"
+            android:background="@drawable/border_halo_blue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/horizontalCenterPartition"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/proposal_1_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/horizontalCenterPartition"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:gravity="center|bottom"
+        android:textSize="13sp"
+        android:text="With Track Video"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/horizontalCenterPartition"
+        android:orientation="vertical"
+        android:gravity="center">
+        <VideoView
+            android:id="@+id/track_video_videoview"
+            android:background="@drawable/border_halo_blue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="36dp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

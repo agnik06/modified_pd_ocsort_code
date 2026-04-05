@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mode_select"
+        android:title="Mode"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/mode_saliency"
+                    android:title="model1" />
+<!--                    android:title="Saliency" />-->
+
+                <item
+                    android:id="@+id/mode_live_focus"
+                    android:title="Live Focus"
+                    android:visible="false"/>
+                <item
+                    android:id="@+id/mode_scene"
+                    android:title="Scene"
+                    android:visible="false"/>
+                <item
+                    android:id="@+id/mode_pet"
+                    android:title="model2" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/style_select"
+        android:title="Style"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/style_greyscale"
+                    android:title="Grey Scale" />
+                <item
+                    android:id="@+id/style_blur"
+                    android:title="Blur" />
+                <item
+                    android:id="@+id/style_white"
+                    android:title="Sticker" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/info_panel"
+        android:icon="@drawable/info"
+        android:onClick="showInfoPopup"
+        android:title="Info"
+        app:showAsAction="ifRoom" />
+</menu>

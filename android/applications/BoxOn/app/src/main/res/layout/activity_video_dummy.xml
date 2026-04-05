@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<TextView
+        android:id="@+id/headerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:gravity="center|top"
+        android:textAllCaps="true"
+        android:background="@drawable/border_halo_orange_dark"
+        android:text="Tracking GOD Demo"/>-->
+
+    <TextView
+        android:id="@+id/fullVideoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/horizontalCenterPartition"
+        android:textColor="@android:color/black"
+        android:gravity="center|bottom"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:text="Original Video\n"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/video_1_surfaceview_lyt"
+        android:layout_above="@+id/horizontalCenterPartition"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/original_video_imageview"
+            android:layout_margin="36dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/horizontalCenterPartition"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/proposal_1_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/horizontalCenterPartition"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:gravity="center|bottom"
+        android:textSize="13sp"
+        android:text="With Track Video"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/horizontalCenterPartition"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/track_video_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="36dp" />
+    </LinearLayout>
+
+
+</RelativeLayout>
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VideoActivity">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/original_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Original Video"
+            android:textSize="18sp"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"></TextView>
+
+        <ImageView
+            android:id="@+id/original_image_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="36dp"
+            android:layout_below="@+id/original_text_view"
+            android:src="@drawable/add_folder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/track_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Tracked Video"
+            android:textSize="18sp"
+            android:layout_below="@+id/original_image_view"
+            android:layout_marginTop="200dp"
+            android:layout_centerHorizontal="true"></TextView>
+
+        <ImageView
+            android:id="@+id/tracked_image_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/track_text_view"
+            android:src="@drawable/add_folder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+
+        </ImageView>
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>-->

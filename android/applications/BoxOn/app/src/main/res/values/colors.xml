@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<resources>-->
+<!--    <color name="colorPrimary">#15b5fb</color>-->
+<!--    <color name="colorPrimaryDark">#007dfb</color>-->
+<!--    <color name="colorAccent">#d81b54</color>-->
+
+<!--    <color name="black_overlay">#66000000</color>-->
+<!--    <color name="button_overlay">#5fcdfd</color>-->
+<!--</resources>-->
+
+
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#2E2E2E</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="button_overlay">#050505</color>
+
+</resources>

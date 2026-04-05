@@ -1,0 +1,44 @@
+.vscode
+engine/bin
+engine/build
+enginen/libs
+engine/docs
+models
+tags
+MON.sym
+android/applications/BoxOn/.idea/*
+android/applications/light_object_detector/.idea/*
+android/deploy-tools/apps
+android/deploy-tools/releases*
+android/deploy-tools/libs
+android/deploy-tools/models
+tags/
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Except folders
+!engine/third_party/*/libs/*/*
+!android/light_object_detector/third_party/*/libs/*/*

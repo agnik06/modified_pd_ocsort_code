@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="camera_resolution_width">640</integer>
+    <integer name="camera_resolution_height">480</integer>
+
+    <dimen name="camera_view_width">640dp</dimen>
+    <dimen name="camera_view_height">480dp</dimen>
+</resources>
