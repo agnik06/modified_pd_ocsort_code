@@ -307,7 +307,7 @@ associate_detections_to_trackers(
     
     std::vector<std::vector<int>> matched_indices;
     // Check if matrix is not empty before calling minCoeff()
-    if (iou_matrix.rows() > 0 && iou_matrix.cols() > 0 && iou_matrix.minCoeff() > 0) {
+    if (iou_matrix.rows() > 0 && iou_matrix.cols() > 0) {
         Eigen::MatrixXi a = (iou_matrix.array() > iou_threshold).cast<int>();
         
         // Check if simple assignment is possible
@@ -460,7 +460,7 @@ associate(
     
     std::vector<std::vector<int>> matched_indices;
     // Check if matrix is not empty before calling minCoeff()
-    if (iou_matrix.rows() > 0 && iou_matrix.cols() > 0 && iou_matrix.minCoeff() > 0) {
+    if (iou_matrix.rows() > 0 && iou_matrix.cols() > 0) {
         Eigen::MatrixXi a = (iou_matrix.array() > iou_threshold).cast<int>();
         
         bool simple_assignment = true;
@@ -630,7 +630,7 @@ associate_kitti(
     
     std::vector<std::vector<int>> matched_indices;
     // Check if matrix is not empty before calling minCoeff()
-    if (iou_matrix.rows() > 0 && iou_matrix.cols() > 0 && iou_matrix.minCoeff() > 0) {
+    if (iou_matrix.rows() > 0 && iou_matrix.cols() > 0) {
         Eigen::MatrixXi a = (iou_matrix.array() > iou_threshold).cast<int>();
         
         bool simple_assignment = true;

@@ -109,12 +109,11 @@ void KalmanBoxTracker::update(const Eigen::VectorXf* bbox) {
 }
 
 Eigen::VectorXf KalmanBoxTracker::predict() {
-    // Check if scale + aspect ratio is negative
+    // Prevent area from going negative: zero out area velocity if predicted area would be <= 0
     if ((kf.get_state()(6) + kf.get_state()(2)) <= 0) {
-        Eigen::VectorXf x_new = kf.get_state();
-        x_new(6) *= 0.0f;
-        // Update internal state directly
-        // Note: This is a simplified approach
+        Eigen::VectorXf x_fixed = kf.get_state();
+        x_fixed(6) *= 0.0f;
+        kf.set_state(x_fixed);
     }
     
     kf.predict();

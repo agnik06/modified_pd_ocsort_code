@@ -66,6 +66,7 @@ typedef struct{
         int image_width;
         int image_height;
         float score;
+        int trackid;
 }BoxInfo;
 
 

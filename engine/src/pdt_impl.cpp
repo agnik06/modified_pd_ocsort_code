@@ -7,6 +7,8 @@
 
 #include "pdt_impl.hpp"
 #include "sys/stat.h"
+#include <limits>
+#include <set>
 
 
 #define STR_HELPER(x) #x
@@ -438,25 +440,14 @@ void PDTImpl::generate_association_ids(char* image_buffer,std::vector<vizpet::Bo
             pet_face_final_boxes.push_back(pet_face_boxes[i]);
         }
     }
-    int id_cnt = pet_boxes.size()+1;
+    // Propagate pet body's trackid to overlapping pet face (association only, no new IDs)
     for(int i = 0; i < pet_boxes.size(); i++){
         for(int j =0; j<pet_face_final_boxes.size(); j++){
             int overlap = ROIUtils::check_overlap_box(pet_boxes[i].location, pet_face_final_boxes[j].location,0.85);
             if(overlap != -1){
-                //pet_boxes[i].association_id = pet_boxes[i].trackid;
                 pet_face_final_boxes[j].trackid = pet_boxes[i].trackid;
                 break;
             }
-        }
-    }
-    for(int i=0; i<pet_boxes.size();i++){
-        if(pet_boxes[i].trackid == -1){
-            pet_boxes[i].trackid = pet_boxes[i].trackid;
-        }
-    }
-    for(int i=0; i<pet_face_final_boxes.size();i++){
-        if(pet_face_final_boxes[i].trackid == -1){
-            pet_face_final_boxes[i].trackid = id_cnt++;
         }
     }
 
@@ -496,11 +487,7 @@ void PDTImpl::generate_association_ids(char* image_buffer,std::vector<vizpet::Bo
             }
         }
     }
-    /*for(int i=0; i<pet_eye_final_boxes.size();i++){
-        if(pet_eye_final_boxes[i].trackid == -1){
-            pet_eye_final_boxes[i].trackid = id_cnt;
-        }
-    }*/
+    // Rebuild result_boxes — all boxes keep their OCSort-assigned persistent trackid
     result_boxes.clear();
     for (const auto& box : pet_boxes) {
         result_boxes.push_back(box);
@@ -754,8 +741,6 @@ bool PDTImpl::execute_with_tracking(char* image_buffer, int width, int height, i
         dets(i, 4) = box_info[i].score;
       }
       
-      // get tracks from OCSort tracker
-      auto tracks = execute_ocsort_tracker->update(dets, img_info, img_size);
       int curr_frame_pet_boxes = 0;
       if(pet_detect_boxes.size()){
         pet_detect_boxes.clear();
@@ -807,18 +792,34 @@ bool PDTImpl::execute_with_tracking(char* image_buffer, int width, int height, i
 
       //outfile << m_frame_number;
       movingAvg tempTrackedBox;
+      std::set<int> tracked_box_indices; // track which box_info entries are covered by OCSort
       for (const auto& strack : tracks_new) {
-        // strack format: [x1, y1, x2, y2, track_id, score, class_id, ...]
-        if (strack.size() >= 7) {
+        // strack format from OCSort: [x1, y1, x2, y2, track_id]
+        if (strack.size() >= 5) {
           // Extract tracking information from the vector
           float x1 = strack(0);
           float y1 = strack(1);
           float x2 = strack(2);
           float y2 = strack(3);
           int track_id = static_cast<int>(strack(4));
-          float score = strack(5);
-          int class_id = static_cast<int>(strack(6));
-          
+
+          // Match tracked box back to original detections to recover score and class_id
+          float best_dist = std::numeric_limits<float>::max();
+          int best_idx = 0;
+          for (size_t j = 0; j < box_info.size(); j++) {
+            float dx1 = x1 - box_info[j].location.left;
+            float dy1 = y1 - box_info[j].location.top;
+            float dx2 = x2 - box_info[j].location.right;
+            float dy2 = y2 - box_info[j].location.bottom;
+            float dist = dx1*dx1 + dy1*dy1 + dx2*dx2 + dy2*dy2;
+            if (dist < best_dist) {
+              best_dist = dist;
+              best_idx = j;
+            }
+          }
+          float score = box_info[best_idx].score;
+          int class_id = box_info[best_idx].tag_id;
+
           // Create a rectangle from the tracking information
           cv::Rect rect(x1, y1, x2 - x1, y2 - y1);
           
@@ -853,18 +854,19 @@ bool PDTImpl::execute_with_tracking(char* image_buffer, int width, int height, i
 
             vizpet::Rectangle trackerBox = vizpet::Rectangle((int)rect.x, (int)rect.y, (int)(rect.x + rect.width), (int)(rect.y + rect.height));
             vizpet::BoundingBox detector_box;
-            for (size_t i = 0; i < pet_detect_boxes.size(); ++i) {
-              const vizpet::BoundingBox detectorBox = pet_detect_boxes[i];
+            // Match against all detections (not just pet_detect_boxes) so all classes get tracked
+            for (size_t i = 0; i < box_info.size(); ++i) {
+              const vizpet::BoundingBox& detectorBox = box_info[i];
               double iou = calculateIoU(trackerBox, detectorBox.location);
               if (iou > maxIoU) {
                 maxIoU = iou;
                 bestMatch = detectorBox;
                 bestMatchIndex = i;
-              } 
+              }
             }
             if (bestMatchIndex != -1) {
               detector_box = bestMatch;
-              pet_detect_boxes.erase(pet_detect_boxes.begin() + bestMatchIndex);
+              tracked_box_indices.insert(bestMatchIndex);
             }
             
           vizpet::Rectangle avgResultBox;
@@ -1049,14 +1051,8 @@ bool PDTImpl::execute_with_tracking(char* image_buffer, int width, int height, i
             }
             #endif //DUMPBOX*/
       
-      for(int i =0; i<temp_result_box_info.size();i++){
-        vizpet::BoundingBox new_box({temp_result_box_info[i].location.left, temp_result_box_info[i].location.top,
-        temp_result_box_info[i].location.right, temp_result_box_info[i].location.bottom},
-        {width, height},
-        temp_result_box_info[i].tag, temp_result_box_info[i].score, temp_result_box_info[i].tag_id,-1);
-        result_boxes.emplace_back(new_box);
-        //prev_frame_result_boxes.emplace_back(new_box);
-      }
+      // Only OCSort-confirmed tracks are in result_boxes — no untracked detections added
+      // This ensures all output boxes have persistent OCSort track IDs
       #ifdef DUMPBOX1 //Input image with detector boxes ; need to keep tese dumps on always
             {
               LG << "dump detector_tracker boxes";
@@ -1364,12 +1360,28 @@ bool PDTImpl::execute_starttracking(char* image_buffer,
     
     // Convert tracks to output format
     for (const auto& track : tracks) {
-        // track format: [x1, y1, x2, y2, track_id, score, class_id, ...]
-        if (track.size() >= 7) {
+        // track format from OCSort: [x1, y1, x2, y2, track_id]
+        if (track.size() >= 5) {
             int track_id = static_cast<int>(track(4));
-            float score = track(5);
-            int class_id = static_cast<int>(track(6));
-            
+            float tx1 = track(0), ty1 = track(1), tx2 = track(2), ty2 = track(3);
+
+            // Match tracked box back to original detections to recover score and class_id
+            float best_dist = std::numeric_limits<float>::max();
+            int best_idx = 0;
+            for (int j = 0; j < n_boxes; j++) {
+              float dx1 = tx1 - box_info[j].location.left;
+              float dy1 = ty1 - box_info[j].location.top;
+              float dx2 = tx2 - box_info[j].location.right;
+              float dy2 = ty2 - box_info[j].location.bottom;
+              float dist = dx1*dx1 + dy1*dy1 + dx2*dx2 + dy2*dy2;
+              if (dist < best_dist) {
+                best_dist = dist;
+                best_idx = j;
+              }
+            }
+            float score = box_info[best_idx].score;
+            int class_id = box_info[best_idx].tag_id;
+
             // Convert class_id to tag_class
             if(class_id == 3) {  // PETFACE_ID
                 outroi_info.Box[outroi_info.numOfBoxes].tag_class = PetDetector::TagCategory::TAG_PETFACE;
@@ -1378,7 +1390,7 @@ bool PDTImpl::execute_starttracking(char* image_buffer,
             } else {
                 outroi_info.Box[outroi_info.numOfBoxes].tag_class = PetDetector::TagCategory::TAG_INVALID;
             }
-            
+
             outroi_info.Box[outroi_info.numOfBoxes].ID = track_id;
             outroi_info.Box[outroi_info.numOfBoxes].score = score;
             outroi_info.Box[outroi_info.numOfBoxes].rect.left = static_cast<int>(track(0));
@@ -1455,12 +1467,28 @@ bool PDTImpl::execute_keeptracking(char* image_buffer, int image_rotation, trkRe
     
     // Convert tracks to output format
     for (const auto& track : tracks) {
-        // track format: [x1, y1, x2, y2, track_id, score, class_id, ...]
-        if (track.size() >= 7) {
+        // track format from OCSort: [x1, y1, x2, y2, track_id]
+        if (track.size() >= 5) {
             int track_id = static_cast<int>(track(4));
-            float score = track(5);
-            int class_id = static_cast<int>(track(6));
-            
+            float tx1 = track(0), ty1 = track(1), tx2 = track(2), ty2 = track(3);
+
+            // Match tracked box back to original detections to recover score and class_id
+            float best_dist = std::numeric_limits<float>::max();
+            int best_idx = 0;
+            for (int j = 0; j < n_boxes; j++) {
+              float dx1 = tx1 - box_info[j].location.left;
+              float dy1 = ty1 - box_info[j].location.top;
+              float dx2 = tx2 - box_info[j].location.right;
+              float dy2 = ty2 - box_info[j].location.bottom;
+              float dist = dx1*dx1 + dy1*dy1 + dx2*dx2 + dy2*dy2;
+              if (dist < best_dist) {
+                best_dist = dist;
+                best_idx = j;
+              }
+            }
+            float score = box_info[best_idx].score;
+            int class_id = box_info[best_idx].tag_id;
+
             // Convert class_id to tag_class
             if(class_id == 3) {  // PETFACE_ID
                 outroi_info.Box[outroi_info.numOfBoxes].tag_class = PetDetector::TagCategory::TAG_PETFACE;
@@ -1469,7 +1497,7 @@ bool PDTImpl::execute_keeptracking(char* image_buffer, int image_rotation, trkRe
             } else {
                 outroi_info.Box[outroi_info.numOfBoxes].tag_class = PetDetector::TagCategory::TAG_INVALID;
             }
-            
+
             outroi_info.Box[outroi_info.numOfBoxes].ID = track_id;
             outroi_info.Box[outroi_info.numOfBoxes].score = score;
             outroi_info.Box[outroi_info.numOfBoxes].rect.left = static_cast<int>(track(0));
@@ -1479,7 +1507,7 @@ bool PDTImpl::execute_keeptracking(char* image_buffer, int image_rotation, trkRe
             outroi_info.numOfBoxes++;
         }
     }
-    
+
     m_frame_number += 1;
     auto execute_finish = CURRENT_TIME;
     #ifdef DUMPBOX

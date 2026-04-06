@@ -29,6 +29,7 @@ public:
     inline void set_H(const Eigen::MatrixXf& H_) { H = H_; }
     inline void set_R(const Eigen::MatrixXf& R_) { R = R_; }
     inline void set_Q(const Eigen::MatrixXf& Q_) { Q = Q_; }
+    inline void set_state(const Eigen::VectorXf& x_) { x = x_; }
     
 private:
     int dim_x;
