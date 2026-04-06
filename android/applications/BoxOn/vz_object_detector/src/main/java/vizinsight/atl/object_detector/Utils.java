@@ -124,7 +124,7 @@ public class Utils {
                 float score = (float)reader.getDouble("score");
                 Log.e("AJ Debug",tag+" tagId,ID"+tagId+","+ID+" - "+left+","+top+","+right+","+bottom);
 
-                entities.add(new VZEntity(tag, tagId, ID, left, top, right, bottom,score,-1));
+                entities.add(new VZEntity(tag, tagId, ID, left, top, right, bottom, score, ID));
             }
             Log.d("UTils:"," exit convert_result_info_to_track_entities");
             return entities;
